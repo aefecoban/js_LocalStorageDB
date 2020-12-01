@@ -78,7 +78,7 @@ class db{
         }
     }
     
-        query(data){
+    query(data){
         if(typeof(data) == "string"){
             var datas = data.split(" ");
             datas[0] = datas[0].toUpperCase();
