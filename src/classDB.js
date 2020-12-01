@@ -89,6 +89,9 @@ class db{
                     if(datas[2] == "FROM"){
                         buffer[0] = datas[1];
                         buffer[1] = datas[3];
+                        if(buffer[1].length < 1){
+                            buffer[1] == this.dbName;
+                        }
                         var name = this.prepareName(buffer[0], buffer[1]);
 
                         return this.get(name, true);
