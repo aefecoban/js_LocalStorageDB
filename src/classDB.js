@@ -23,6 +23,24 @@ class db{
             return false;
         }
     }
+    
+    update(dataName, dataValue){
+        if(this.dbActivate){
+            var name = this.prepareName(dataName);
+            if(this.exists(name)){
+                var control = this.remove(dataName);
+                if(control){
+                    this.add(dataName, dataValue);
+                }else{
+                    return false;
+                }
+            }else{
+                this.add(dataName, dataValue);
+            }
+        }else{
+
+        }
+    }
 
     prepareName(dataName, dbNameChange = ""){
         if(dbNameChange.length < 1){
@@ -79,26 +97,29 @@ class db{
     }
     
     query(data){
-        if(typeof(data) == "string"){
-            var datas = data.split(" ");
-            datas[0] = datas[0].toUpperCase();
-
-            if(datas[0] == "SELECT"){
-                var buffer = new Array();
-                if(datas.length == 4){
-                    if(datas[2] == "FROM"){
-                        buffer[0] = datas[1];
-                        buffer[1] = datas[3];
-                        if(buffer[1].length < 1){
-                            buffer[1] == this.dbName;
+        if(this.dbActivate){
+            if(typeof(data) == "string"){
+                var datas = data.split(" ");
+                datas[0] = datas[0].toUpperCase();
+    
+                if(datas[0] == "SELECT"){
+                    var buffer = new Array();
+                    if(datas.length == 4){
+                        if(datas[2] == "FROM"){
+                            buffer[0] = datas[1];
+                            buffer[1] = datas[3];
+                            if(buffer[1].length < 1){
+                                buffer[1] == this.dbName;
+                            }
+                            var name = this.prepareName(buffer[0], buffer[1]);
+    
+                            return this.get(name, true);
                         }
-                        var name = this.prepareName(buffer[0], buffer[1]);
-
-                        return this.get(name, true);
                     }
                 }
+    
             }
-
         }
+    }
     }
 }
