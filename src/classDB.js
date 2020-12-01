@@ -24,9 +24,14 @@ class db{
         }
     }
 
-    prepareName(dataName){
-        var name = this.dbName + dataName;
-        return name;
+    prepareName(dataName, dbNameChange = ""){
+        if(dbNameChange.length < 1){
+            var name = this.dbName + dataName;
+            return name;
+        }else{
+            var name = dbNameChange + dataName;
+            return name;
+        }
     }
 
     exists(name){
@@ -37,13 +42,22 @@ class db{
         }
     }
 
-    get(dataName){
+    get(dataName, nameHasBeenPrepared = false){
         if(this.dbActivate){
-            var name = this.prepareName(dataName);
-            if(this.exists(name)){
-                return localStorage.getItem(name);
+            if(nameHasBeenPrepared){
+                var name = dataName;
+                if(this.exists(name)){
+                    return localStorage.getItem(name);
+                }else{
+                    return "";
+                }
             }else{
-                return "";
+                var name = this.prepareName(dataName);
+                if(this.exists(name)){
+                    return localStorage.getItem(name);
+                }else{
+                    return "";
+                }
             }
         }
     }
@@ -61,6 +75,27 @@ class db{
             }else{
                 return "";
             }
+        }
+    }
+    
+        query(data){
+        if(typeof(data) == "string"){
+            var datas = data.split(" ");
+            datas[0] = datas[0].toUpperCase();
+
+            if(datas[0] == "SELECT"){
+                var buffer = new Array();
+                if(datas.length == 4){
+                    if(datas[2] == "FROM"){
+                        buffer[0] = datas[1];
+                        buffer[1] = datas[3];
+                        var name = this.prepareName(buffer[0], buffer[1]);
+
+                        return this.get(name, true);
+                    }
+                }
+            }
+
         }
     }
 }
