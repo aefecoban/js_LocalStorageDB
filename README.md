@@ -3,7 +3,7 @@
 ## Object Creation
 
 ```javascript
-var jsDB = new db("prefix");
+var jsDB = new classDB("prefix");
 ```
 
 ## Adding Data
@@ -36,3 +36,12 @@ SELECT = Select operator.
 username = Name of the element in local storage.
 FROM = operator specifying which name prefix to select.
 prefix = The prefix we set when creating the object.
+
+Data Insert :
+```javascript
+jsDB.query("INSERT INTO username (value) VALUES (It's my username)");
+```
+
+INSERT INTO = Insert operator.
+username = Name of the element in local storage.
+(It's my username) = The data to be added must be written in parentheses. (It is only sensitive to the first and last parentheses so you can write other parentheses in data.)
